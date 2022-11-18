@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:granuls/ui/pages/main/main_menu_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -46,9 +47,10 @@ class _LoginPageState extends State<LoginPage> {
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => LoginPage()
-                    ));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MainMenuPage()));
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 16),
@@ -56,12 +58,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: Text(
                     'Masuk',
-                    style: TextStyle(
-                        fontSize: 22.sp,
-                        fontWeight: FontWeight.w600
-                    ),
-                  )
-              ),
+                    style:
+                        TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w600),
+                  )),
             ),
           ],
         ),

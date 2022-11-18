@@ -21,10 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
           children: [
             Text(
               'Daftar',
-              style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w600
-              ),
+              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 32.h),
             TextField(
@@ -52,21 +49,16 @@ class _RegisterPageState extends State<RegisterPage> {
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: ElevatedButton(
-                  onPressed: () {
-
-                  },
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 16),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: Text(
                     'Daftar',
-                    style: TextStyle(
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.w600
-                    ),
-                  )
-              ),
+                    style:
+                        TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w600),
+                  )),
             ),
           ],
         ),
