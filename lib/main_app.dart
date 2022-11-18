@@ -14,32 +14,31 @@ class MainApp extends StatelessWidget {
     AuthCubit authCubit = AuthCubit();
 
     return MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthCubit>(create: (context) => authCubit),
-        ],
-        child: ScreenUtilInit(
-          designSize: const Size(375, 812),
-          builder: (context, child) {
-            return MaterialApp(
-              title: App().appTitle!,
-              theme: ThemeData(
-                primarySwatch: Colors.blue,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
-                textTheme: GoogleFonts.latoTextTheme(
-                    ThemeData(brightness: Brightness.light).textTheme),
-                colorScheme:
-                    const ColorScheme.light(primary: Color(0xFF44BB77)),
-              ),
-              builder: (context, widget) {
-                return MediaQuery(
-                  //Setting font does not change with system font size
-                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                  child: widget!,
-                );
-              },
-              home: const SplashPage(),
-            );
-          },
-        ));
+      providers: [
+        BlocProvider<AuthCubit>(create: (context) => authCubit),
+      ],
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder: (context , child) {
+          return MaterialApp(
+            title: App().appTitle!,
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              textTheme: GoogleFonts.latoTextTheme(ThemeData(brightness: Brightness.light).textTheme),
+              colorScheme: const ColorScheme.light(primary: Color(0xFF44BB77)),
+            ),
+            builder: (context, widget) {
+              return MediaQuery(
+                //Setting font does not change with system font size
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                child: widget!,
+              );
+            },
+            home: const SplashPage(),
+          );
+        },
+      )
+    );
   }
 }

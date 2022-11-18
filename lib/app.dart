@@ -11,7 +11,10 @@ class App {
   late SharedPreferences prefs;
   late Dio dio;
 
-  App.configure({this.apiBaseURL, this.appTitle}) {
+  App.configure({
+    this.apiBaseURL,
+    this.appTitle
+  }) {
     _instance = this;
   }
 
@@ -34,10 +37,10 @@ class App {
         baseUrl: apiBaseURL!,
         connectTimeout: 10000,
         receiveTimeout: 50000,
-        responseType: ResponseType.json));
+        responseType: ResponseType.json
+    ));
 
-    if (!GlobalMethodHelper.isEmpty(
-        prefs.get(ConstantHelper.PREFS_TOKEN_KEY))) {
+    if (!GlobalMethodHelper.isEmpty(prefs.get(ConstantHelper.PREFS_TOKEN_KEY))) {
       dio.options.headers = {
         'Authorization': 'Bearer ${prefs.get(ConstantHelper.PREFS_TOKEN_KEY)}'
       };
@@ -46,8 +49,7 @@ class App {
       };
     }
 
-    dio.interceptors
-        .add(InterceptorsWrapper(onError: (DioError e, handler) async {
+    dio.interceptors.add(InterceptorsWrapper(onError: (DioError e, handler) async {
       //Map<String, dynamic> data = e.response.data;
       if (e.response?.statusCode != null) {
         if (e.response?.statusCode == 400) {}
