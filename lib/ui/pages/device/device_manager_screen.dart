@@ -24,6 +24,8 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
     "OOKD98PPZ",
   ];
 
+  TextEditingController _deviceIdController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,8 +164,9 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
                       ),
                     ),
                     SizedBox(height: 20.h),
-                    TextField(
-                      decoration: InputDecoration(
+                    TextFormField(
+                      controller: _deviceIdController,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'ID Alat',
                       ),

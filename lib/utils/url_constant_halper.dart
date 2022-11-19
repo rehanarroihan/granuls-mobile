@@ -3,4 +3,7 @@ class UrlConstantHelper {
 
   static const String POST_AUTH_LOGIN = "User/login";
   static const String GET_USER_DETAIL = "User/detail";
+
+  static const String GET_DEVICES = "Device";
+  static const String POST_CREATE_DEVICE = "Device";
 }

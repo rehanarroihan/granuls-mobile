@@ -39,9 +39,9 @@ class _LoginPageState extends State<LoginPage> {
           ).show(context);
         } else if (state is UserLoginSuccessful) {
           Navigator.pop(context);
-          Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => MainMenuPage()
-          ));
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+            builder: (context) => const MainMenuPage()
+          ), (Route<dynamic> route) => false);
         } else if (state is UserLoginFailed) {
           Navigator.pop(context);
           showFlutterToast(state.message);
@@ -82,7 +82,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   SizedBox(height: 84.h),
-
                 ],
               ),
             ),

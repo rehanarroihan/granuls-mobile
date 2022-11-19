@@ -17,7 +17,7 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void initState() {
-    Future.delayed(const Duration(microseconds: 1)).then((_) async {
+    Future.delayed(const Duration(milliseconds: 1)).then((_) async {
       bool isLoggedIn = App().prefs.getBool(ConstantHelper.PREFS_IS_USER_LOGGED_IN) ?? false;
       if (isLoggedIn) {
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
