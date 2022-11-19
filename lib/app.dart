@@ -34,10 +34,10 @@ class App {
 
   void _initDio() {
     dio = Dio(BaseOptions(
-        baseUrl: apiBaseURL!,
-        connectTimeout: 10000,
-        receiveTimeout: 50000,
-        responseType: ResponseType.json
+      baseUrl: apiBaseURL!,
+      connectTimeout: 10000,
+      receiveTimeout: 50000,
+      responseType: ResponseType.json
     ));
 
     if (!GlobalMethodHelper.isEmpty(prefs.get(ConstantHelper.PREFS_TOKEN_KEY))) {

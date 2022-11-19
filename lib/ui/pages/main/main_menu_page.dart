@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:granuls/main_menu_model.dart';
+import 'package:granuls/app.dart';
+import 'package:granuls/models/main_menu_model.dart';
 import 'package:granuls/ui/pages/device/device_manager_screen.dart';
+import 'package:granuls/utils/constant_helper.dart';
 
 class MainMenuPage extends StatefulWidget {
   const MainMenuPage({super.key});
@@ -54,14 +56,18 @@ class _MainMenuPageState extends State<MainMenuPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Halo, Rahardian Agung",
+                            "Halo, ${App().prefs.get(ConstantHelper.PREFS_USER_FULL_NAME) ?? "Pengguna"}",
                             style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 24.sp),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 24.sp
+                            ),
                           ),
                           Text(
                             "1 Lahan Sudah di Kelola",
                             style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 16.sp),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16.sp
+                            ),
                           )
                         ],
                       ),
@@ -127,15 +133,16 @@ class _MainMenuPageState extends State<MainMenuPage> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
           decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0x1A000000),
-                  offset: Offset(0, 1),
-                  blurRadius: 4,
-                ),
-              ]),
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0x1A000000),
+                offset: Offset(0, 1),
+                blurRadius: 4,
+              ),
+            ]
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

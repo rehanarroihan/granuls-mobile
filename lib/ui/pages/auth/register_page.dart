@@ -45,22 +45,32 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
             SizedBox(height: 84.h),
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
-              child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  child: Text(
-                    'Daftar',
-                    style:
-                        TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w600),
-                  )),
-            ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        width: double.infinity,
+        padding: EdgeInsets.only(
+          right: 24.w,
+          left: 24.w,
+          bottom: MediaQuery.of(context).viewInsets.bottom
+        ),
+        margin: EdgeInsets.only(bottom: 28.h),
+        child: ElevatedButton(
+            onPressed: () {
+
+            },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: Text(
+              'Daftar',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600
+              ),
+            )
         ),
       ),
     );

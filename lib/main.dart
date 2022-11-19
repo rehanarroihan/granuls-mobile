@@ -7,7 +7,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   App.configure(
-      apiBaseURL: UrlConstantHelper.SERVER_ADDRESS, appTitle: 'Granuls');
+    apiBaseURL: UrlConstantHelper.SERVER_ADDRESS,
+    appTitle: 'Granuls'
+  );
 
   await App().init();
 

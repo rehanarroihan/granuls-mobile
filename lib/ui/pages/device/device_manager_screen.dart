@@ -38,7 +38,7 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
         title: const Text(
           'Pengelolaan Alat',
           style: TextStyle(
-              color: Colors.black
+            color: Colors.black
           ),
         ),
         actions: [
@@ -63,14 +63,14 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
       ) :
       SingleChildScrollView(
         child: ListView.builder(
-            padding: EdgeInsets.symmetric(
-                horizontal: 16.w,
-                vertical: 20.h
-            ),
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: _devices.length,
-            itemBuilder: (context, index) => _deviceItem(context, index)
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 20.h
+          ),
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: _devices.length,
+          itemBuilder: (context, index) => _deviceItem(context, index)
         ),
       ),
     );
@@ -85,19 +85,19 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
         margin: const EdgeInsets.only(bottom: 16),
         child: Container(
           padding: EdgeInsets.symmetric(
-              horizontal: 12.w,
-              vertical: 16.h
+            horizontal: 12.w,
+            vertical: 16.h
           ),
           decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0x1A000000),
-                  offset: Offset(0, 1),
-                  blurRadius: 4,
-                ),
-              ]
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0x1A000000),
+                offset: Offset(0, 1),
+                blurRadius: 4,
+              ),
+            ]
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,8 +113,8 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
               Text(
                 _devices[index],
                 style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500
                 ),
               )
             ],
@@ -126,78 +126,75 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
 
   void _showAddDeviceDialog() {
     showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
         ),
-        builder: (context) {
-          return StatefulBuilder(
-            builder: (context, StateSetter stateSetter) {
-              return Container(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery
-                        .of(context)
-                        .viewInsets
-                        .bottom
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, StateSetter stateSetter) {
+            return Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom
+              ),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
                 ),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
-                ),
-                child: Container(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 8.h),
-                      Text(
-                        'Tambah Alat Baru',
-                        style: TextStyle(
+              ),
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 8.h),
+                    Text(
+                      'Tambah Alat Baru',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+                    TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'ID Alat',
+                      ),
+                    ),
+                    SizedBox(height: 16.h),
+                    Container(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Text(
+                          'Daftarkan',
+                          style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600
-                        ),
+                          ),
+                        )
                       ),
-                      SizedBox(height: 20.h),
-                      TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'ID Alat',
-                        ),
-                      ),
-                      SizedBox(height: 16.h),
-                      Container(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                            onPressed: () {
-
-                            },
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            child: Text(
-                              'Daftarkan',
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600
-                              ),
-                            )
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              );
-            },
-          );
-        }
+              ),
+            );
+          },
+        );
+      }
     );
   }
 }
