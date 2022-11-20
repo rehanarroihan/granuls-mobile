@@ -6,8 +6,7 @@ part 'device_state.dart';
 class DeviceCubit extends Cubit<DeviceState> {
   DeviceCubit() : super(DeviceInitial());
 
-
-
+  List<String> devices = [];
   bool isDeviceListLoading = false;
 
   void getDeviceList() async {

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:granuls/cubit/device/device_cubit.dart';
+import 'package:granuls/ui/widgets/base/reactive_refresh_indicator.dart';
 
 class DeviceManagerScreen extends StatefulWidget {
   const DeviceManagerScreen({Key? key}) : super(key: key);
@@ -9,6 +12,15 @@ class DeviceManagerScreen extends StatefulWidget {
 }
 
 class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
+  late DeviceCubit _deviceCubit;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _deviceCubit = BlocProvider.of<DeviceCubit>(context);
+  }
+
   final _devices = [
     "XIID78KK",
     "KDZ88IUYL",
@@ -28,54 +40,80 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        bottomOpacity: 0.0,
-        elevation: 0.0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text(
-          'Pengelolaan Alat',
-          style: TextStyle(
-            color: Colors.black
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add, color: Colors.black),
-            tooltip: 'Tambah Device Baru',
-            onPressed: () => _showAddDeviceDialog(),
-          )
-        ],
-      ),
-      body: true != true ? Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('Belum ada alat, silahkan buat baru')
-          ],
-        ),
-      ) :
-      SingleChildScrollView(
-        child: ListView.builder(
-          padding: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 20.h
-          ),
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: _devices.length,
-          itemBuilder: (context, index) => _deviceItem(context, index)
-        ),
+    return BlocListener(
+      bloc: _deviceCubit,
+      listener: (context, state) {
+
+      },
+      child: BlocBuilder(
+        bloc: _deviceCubit,
+        builder: (context, state) {
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+              bottomOpacity: 0.0,
+              elevation: 0.0,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              title: const Text(
+                'Pengelolaan Alat',
+                style: TextStyle(
+                  color: Colors.black
+                ),
+              ),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.add, color: Colors.black),
+                  tooltip: 'Tambah Device Baru',
+                  onPressed: () => _showAddDeviceDialog(),
+                )
+              ],
+            ),
+            body: _buildBody(),
+          );
+        },
       ),
     );
+  }
+
+  Widget _buildBody() {
+    if (_deviceCubit.isDeviceListLoading) {
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.2,
+      );
+    } else {
+      if (_deviceCubit.devices.isNotEmpty) {
+        return ReactiveRefreshIndicator(
+          isRefreshing: _deviceCubit.isDeviceListLoading,
+          onRefresh: () => _deviceCubit.getDeviceList(),
+          child: ListView.builder(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16.w,
+              vertical: 20.h
+            ),
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: _devices.length,
+            itemBuilder: (context, index) => _deviceItem(context, index)
+          ),
+        );
+      } else {
+        return Container(
+          width: double.infinity,
+          height: double.infinity,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('Belum ada alat, silahkan buat baru')
+            ],
+          ),
+        );
+      }
+    }
   }
 
   Widget _deviceItem(BuildContext context, int index) {

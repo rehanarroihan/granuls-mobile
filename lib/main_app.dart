@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:granuls/app.dart';
 import 'package:granuls/cubit/auth/auth_cubit.dart';
+import 'package:granuls/cubit/device/device_cubit.dart';
 import 'package:granuls/ui/pages/splash_page.dart';
 
 class MainApp extends StatelessWidget {
@@ -12,10 +13,12 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthCubit authCubit = AuthCubit();
+    DeviceCubit deviceCubit = DeviceCubit();
 
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(create: (context) => authCubit),
+        BlocProvider<DeviceCubit>(create: (context) => deviceCubit),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
