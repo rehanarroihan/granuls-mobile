@@ -13,6 +13,27 @@ class DeviceCubit extends Cubit<DeviceState> {
   List<DeviceModel> devices = [];
   bool isDeviceListLoading = false;
 
+  bool isDeviceRegisterLoading = false;
+
+  void registerDevice(String deviceCode) async {
+    isDeviceRegisterLoading = true;
+    emit(RegisterDeviceInit());
+
+    ApiResponse<String> checkDeviceResponse = await _deviceService.checkDevice(deviceCode);
+    if (checkDeviceResponse.status && checkDeviceResponse.data != null) {
+      ApiResponse<String> registerDeviceResponse = await _deviceService.createDevice(checkDeviceResponse.data!);
+      isDeviceRegisterLoading = true;
+      if (registerDeviceResponse.status) {
+        emit(RegisterDeviceSuccessful());
+      } else {
+        emit(const RegisterDeviceFailed(message: "Gagal registrasi device baru"));
+      }
+    } else {
+      isDeviceRegisterLoading = true;
+      emit(const RegisterDeviceFailed(message: "ID alat tidak valid"));
+    }
+  }
+
   void getDeviceList() async {
     devices.clear();
     isDeviceListLoading = true;

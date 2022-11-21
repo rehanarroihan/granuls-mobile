@@ -25,6 +25,74 @@ class DeviceService {
     } on DioError catch (e) {
       if (e.response?.statusCode == 400) {
         return ApiResponse(
+            status: false,
+            message: 'Bad request'
+        );
+      } else {
+        return ApiResponse(
+            status: false,
+            message: 'Service unavailable'
+        );
+      }
+    } catch(e, stackTrace) {
+      return ApiResponse(
+          status: false,
+          message: 'Sistem error'
+      );
+    }
+  }
+
+  Future<ApiResponse<String>> checkDevice(String deviceCode) async {
+    try {
+      Response response = await _dio.get(
+        UrlConstantHelper.GET_DEVICE_CHECK + "?id=" + deviceCode,
+      );
+      if (response.statusCode == 200) {
+        return ApiResponse(
+          status: true,
+          data: response.data['result'],
+        );
+      }
+
+      return ApiResponse(status: false, message: "Errorrr");
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400) {
+        return ApiResponse(
+          status: false,
+          message: 'Bad request'
+        );
+      } else {
+        return ApiResponse(
+          status: false,
+          message: 'Service unavailable'
+        );
+      }
+    } catch(e, stackTrace) {
+      return ApiResponse(
+        status: false,
+        message: 'Sistem error'
+      );
+    }
+  }
+
+  Future<ApiResponse<String>> createDevice(String deviceId) async {
+    try {
+      Response response = await _dio.post(
+        UrlConstantHelper.POST_CREATE_DEVICE,
+        data: {
+          "id_device": deviceId,
+        }
+      );
+      if (response.statusCode == 200) {
+        return ApiResponse(
+          status: true,
+          data: response.data['result'].toString(),
+        );
+      }
+      return ApiResponse(status: false, message: "Errorrr");
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400) {
+        return ApiResponse(
           status: false,
           message: 'Bad request'
         );

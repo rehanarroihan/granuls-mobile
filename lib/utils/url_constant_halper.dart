@@ -6,5 +6,6 @@ class UrlConstantHelper {
   static const String GET_USER_DETAIL = "User/detail";
 
   static const String GET_DEVICES = "Device/user";
-  static const String POST_CREATE_DEVICE = "Device";
+  static const String GET_DEVICE_CHECK = "Device/check";
+  static const String POST_CREATE_DEVICE = "Device/user";
 }

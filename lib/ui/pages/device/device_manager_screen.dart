@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:granuls/cubit/device/device_cubit.dart';
 import 'package:granuls/ui/widgets/base/reactive_refresh_indicator.dart';
+import 'package:granuls/utils/show_flutter_toast.dart';
 
 class DeviceManagerScreen extends StatefulWidget {
   const DeviceManagerScreen({Key? key}) : super(key: key);
@@ -23,14 +24,20 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
     _deviceCubit.getDeviceList();
   }
 
-  TextEditingController _deviceIdController = TextEditingController();
+  final TextEditingController _deviceIdController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocListener(
       bloc: _deviceCubit,
       listener: (context, state) {
-
+        if (state is RegisterDeviceSuccessful) {
+          Navigator.pop(context);
+          _deviceCubit.getDeviceList();
+          showFlutterToast("Berhasil registrasi device");
+        } else if (state is RegisterDeviceFailed) {
+          showFlutterToast(state.message);
+        }
       },
       child: BlocBuilder(
         bloc: _deviceCubit,
@@ -162,63 +169,70 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
         ),
       ),
       builder: (context) {
-        return StatefulBuilder(
-          builder: (context, StateSetter stateSetter) {
-            return Container(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom
-              ),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                ),
-              ),
-              child: Container(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 8.h),
-                    Text(
-                      'Tambah Alat Baru',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600
-                      ),
+        return BlocBuilder(
+          bloc: _deviceCubit,
+          builder: (context, state) {
+            return StatefulBuilder(
+              builder: (context, StateSetter stateSetter) {
+                return Container(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom
+                  ),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
                     ),
-                    SizedBox(height: 20.h),
-                    TextFormField(
-                      controller: _deviceIdController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'ID Alat',
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
-                    Container(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        child: Text(
-                          'Daftarkan',
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 8.h),
+                        Text(
+                          'Tambah Alat Baru',
                           style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600
+                          ),
+                        ),
+                        SizedBox(height: 20.h),
+                        TextFormField(
+                          controller: _deviceIdController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'ID Alat',
+                          ),
+                        ),
+                        SizedBox(height: 16.h),
+                        Container(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                if (_deviceCubit.isDeviceRegisterLoading) {
+                                  _deviceCubit.registerDevice(_deviceIdController.text);
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              child: Text(
+                                _deviceCubit.isDeviceRegisterLoading ? 'Mendaftarkan...' : 'Daftarkan',
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600
+                                ),
+                              )
                           ),
                         )
-                      ),
-                    )
-                  ],
-                ),
-              ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             );
           },
         );
