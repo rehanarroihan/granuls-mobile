@@ -19,22 +19,9 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
     super.initState();
 
     _deviceCubit = BlocProvider.of<DeviceCubit>(context);
-  }
 
-  final _devices = [
-    "XIID78KK",
-    "KDZ88IUYL",
-    "OOKD98PPZ",
-    "OOKD98PPZ",
-    "OOKD98PPZ",
-    "OOKD98PPZ",
-    "OOKD98PPZ",
-    "OOKD98PPZ",
-    "OOKD98PPZ",
-    "OOKD98PPZ",
-    "OOKD98PPZ",
-    "OOKD98PPZ",
-  ];
+    _deviceCubit.getDeviceList();
+  }
 
   TextEditingController _deviceIdController = TextEditingController();
 
@@ -71,7 +58,11 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
                 )
               ],
             ),
-            body: _buildBody(),
+            body: ReactiveRefreshIndicator(
+              isRefreshing: _deviceCubit.isDeviceListLoading,
+              onRefresh: () => _deviceCubit.getDeviceList(),
+              child: _buildBody()
+            ),
           );
         },
       ),
@@ -85,22 +76,18 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
       );
     } else {
       if (_deviceCubit.devices.isNotEmpty) {
-        return ReactiveRefreshIndicator(
-          isRefreshing: _deviceCubit.isDeviceListLoading,
-          onRefresh: () => _deviceCubit.getDeviceList(),
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 20.h
-            ),
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: _devices.length,
-            itemBuilder: (context, index) => _deviceItem(context, index)
+        return ListView.builder(
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 20.h
           ),
+          physics: const AlwaysScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: _deviceCubit.devices.length,
+          itemBuilder: (context, index) => _deviceItem(context, index)
         );
       } else {
-        return Container(
+        return SizedBox(
           width: double.infinity,
           height: double.infinity,
           child: Column(
@@ -151,7 +138,7 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
                 ),
               ),
               Text(
-                _devices[index],
+                _deviceCubit.devices[index].kodeDevice ?? "DEVICE",
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w500

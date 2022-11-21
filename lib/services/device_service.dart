@@ -1,21 +1,23 @@
 import 'package:dio/dio.dart';
 import 'package:granuls/app.dart';
 import 'package:granuls/models/api_response.dart';
-import 'package:granuls/models/user_model.dart';
+import 'package:granuls/models/device_model.dart';
 import 'package:granuls/utils/url_constant_halper.dart';
 
 class DeviceService {
   final Dio _dio = App().dio;
 
-  Future<ApiResponse<UserModel>> getUserDetail() async {
+  Future<ApiResponse<List<DeviceModel>>> getDevices() async {
     try {
       Response response = await _dio.get(
-        UrlConstantHelper.GET_USER_DETAIL,
+        UrlConstantHelper.GET_DEVICES,
       );
       if (response.statusCode == 200) {
         return ApiResponse(
           status: true,
-          data: UserModel.fromJson(response.data),
+          data: response.data['result'] != null ? List.generate(response.data['result'].length, (index) {
+            return DeviceModel.fromJson(response.data['result'][index]);
+          }): [],
         );
       }
 

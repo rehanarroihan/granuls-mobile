@@ -40,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
         } else if (state is UserRegisterSuccessful) {
           Navigator.pop(context);
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-              builder: (context) => const MainMenuPage()
+            builder: (context) => const MainMenuPage()
           ), (Route<dynamic> route) => false);
         } else if (state is UserRegisterFailed) {
           Navigator.pop(context);
