@@ -7,6 +7,43 @@ import 'package:granuls/utils/url_constant_halper.dart';
 class AuthService {
   final Dio _dio = App().dio;
 
+  Future<ApiResponse<String?>> userRegister(String fullName, String username, String password) async {
+    try {
+      Response response = await _dio.post(
+        UrlConstantHelper.POST_AUTH_REGISTER,
+        data: {
+          "nama": fullName,
+          "username": username,
+          "password": password
+        }
+      );
+      if (response.statusCode == 200) {
+        return ApiResponse(
+          status: true,
+        );
+      }
+
+      return ApiResponse(status: false, message: 'Register failed');
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400) {
+        return ApiResponse(
+          status: false,
+          message: 'Register failed'
+        );
+      } else if (e.response?.statusCode == 500) {
+        return ApiResponse(
+          status: false,
+          message: 'Registrasi gagal, coba menggunakan username lain'
+        );
+      } else {
+        return ApiResponse(
+          status: false,
+          message: 'Registrasi gagal'
+        );
+      }
+    }
+  }
+
   Future<ApiResponse<String?>> userLogin(String username, String password) async {
     try {
       Response response = await _dio.post(

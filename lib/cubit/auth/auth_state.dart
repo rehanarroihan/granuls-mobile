@@ -23,3 +23,18 @@ class UserLoginFailed extends AuthState {
 
   const UserLoginFailed({required this.message});
 }
+
+class UserRegisterInit extends AuthState {}
+
+class UserRegisterSuccessful extends AuthState {
+  final UserModel userData;
+  final String? message;
+
+  const UserRegisterSuccessful({this.message, required this.userData});
+}
+
+class UserRegisterFailed extends AuthState {
+  final String message;
+
+  const UserRegisterFailed({required this.message});
+}

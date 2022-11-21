@@ -76,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: 16.h),
                   TextFormField(
                     controller: _passwordController,
+                    obscureText: true,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Password',
@@ -100,6 +101,8 @@ class _LoginPageState extends State<LoginPage> {
 
                   if (username.isNotEmpty && password.isNotEmpty) {
                     _authCubit.loginUser(username, password);
+                  } else {
+                    showFlutterToast("Lengkapi form terlebih dahulu");
                   }
                 },
                 style: ElevatedButton.styleFrom(
