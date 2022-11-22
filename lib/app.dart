@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:granuls/utils/constant_helper.dart';
 import 'package:granuls/utils/global_method_helper.dart';
+import 'package:granuls/utils/url_constant_halper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class App {
@@ -10,6 +11,7 @@ class App {
 
   late SharedPreferences prefs;
   late Dio dio;
+  late Dio deviceApiDio;
 
   App.configure({
     this.apiBaseURL,
@@ -40,10 +42,14 @@ class App {
       responseType: ResponseType.json
     ));
 
+    deviceApiDio = Dio(BaseOptions(
+      baseUrl: UrlConstantHelper.DEVICE_SERVER_ADDRESS,
+      connectTimeout: 10000,
+      receiveTimeout: 50000,
+      responseType: ResponseType.json
+    ));
+
     if (!GlobalMethodHelper.isEmpty(prefs.get(ConstantHelper.PREFS_TOKEN_KEY))) {
-      dio.options.headers = {
-        'Authorization': 'Bearer ${prefs.get(ConstantHelper.PREFS_TOKEN_KEY)}'
-      };
       dio.options.headers = {
         'Authorization': 'Bearer ${prefs.get(ConstantHelper.PREFS_TOKEN_KEY)}'
       };

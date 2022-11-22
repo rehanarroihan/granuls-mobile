@@ -14,12 +14,15 @@ class DeviceManagerScreen extends StatefulWidget {
 
 class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
   late DeviceCubit _deviceCubit;
+  late BuildContext _context;
 
   @override
   void initState() {
     super.initState();
 
-    _deviceCubit = BlocProvider.of<DeviceCubit>(context);
+    _context = context;
+
+    _deviceCubit = BlocProvider.of<DeviceCubit>(_context);
 
     _deviceCubit.getDeviceList();
   }
@@ -159,8 +162,8 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
   }
 
   void _showAddDeviceDialog() {
-    showModalBottomSheet(
-      context: context,
+    showModalBottomSheet<DeviceCubit>(
+      context: _context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -176,7 +179,7 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
               builder: (context, StateSetter stateSetter) {
                 return Container(
                   padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom
+                    bottom: MediaQuery.of(context).viewInsets.bottom
                   ),
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -194,8 +197,8 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
                         Text(
                           'Tambah Alat Baru',
                           style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600
                           ),
                         ),
                         SizedBox(height: 20.h),
@@ -210,22 +213,22 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
                         Container(
                           width: double.infinity,
                           child: ElevatedButton(
-                              onPressed: () {
-                                if (_deviceCubit.isDeviceRegisterLoading) {
-                                  _deviceCubit.registerDevice(_deviceIdController.text);
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            onPressed: () {
+                              if (_deviceCubit.isDeviceRegisterLoading) {
+                                _deviceCubit.registerDevice(_deviceIdController.text);
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: Text(
+                              _deviceCubit.isDeviceRegisterLoading ? 'Mendaftarkan...' : 'Daftarkan',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600
                               ),
-                              child: Text(
-                                _deviceCubit.isDeviceRegisterLoading ? 'Mendaftarkan...' : 'Daftarkan',
-                                style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600
-                                ),
-                              )
+                            )
                           ),
                         )
                       ],

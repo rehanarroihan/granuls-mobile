@@ -20,6 +20,11 @@ dependencies:
   flutter_screenutil: ^5.6.0
   google_fonts: ^3.0.1
   equatable: ^2.0.5
+  geolocator: ^9.0.2
+  geocoding: ^2.0.5
+  dropdown_search: ^5.0.3
+  lottie: ^2.0.0
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
@@ -31,3 +36,4 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/lottie/

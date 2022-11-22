@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:granuls/app.dart';
 import 'package:granuls/models/main_menu_model.dart';
 import 'package:granuls/ui/pages/device/device_manager_screen.dart';
+import 'package:granuls/ui/pages/land/land_list_screen.dart';
 import 'package:granuls/ui/pages/splash_page.dart';
 import 'package:granuls/ui/widgets/modules/coming_soon_dialog.dart';
 import 'package:granuls/utils/constant_helper.dart';
@@ -160,7 +161,9 @@ class _MainMenuPageState extends State<MainMenuPage> {
           break;
 
           case 2: {
-            ComingSoonDialog().show(context);
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) => const LandListScreen()
+            ));
           }
           break;
 

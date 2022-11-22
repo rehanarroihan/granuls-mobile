@@ -1,22 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:granuls/app.dart';
 import 'package:granuls/models/api_response.dart';
-import 'package:granuls/models/device_model.dart';
+import 'package:granuls/models/plant_model.dart';
 import 'package:granuls/utils/url_constant_halper.dart';
 
-class DeviceService {
+class PlantService {
   final Dio _dio = App().dio;
 
-  Future<ApiResponse<List<DeviceModel>>> getDevices() async {
+  Future<ApiResponse<List<PlantModel>>> getPlants() async {
     try {
       Response response = await _dio.get(
-        UrlConstantHelper.GET_DEVICES,
+        UrlConstantHelper.GET_PLANTS,
       );
       if (response.statusCode == 200) {
         return ApiResponse(
           status: true,
-          data: response.data['result'] != null ? List.generate(response.data['result'].length, (index) {
-            return DeviceModel.fromJson(response.data['result'][index]);
+          data: response.data != null ? List.generate(response.data.length, (index) {
+            return PlantModel.fromJson(response.data[index]);
           }) : [],
         );
       }
