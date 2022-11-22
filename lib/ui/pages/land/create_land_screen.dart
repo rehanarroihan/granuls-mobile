@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:granuls/cubit/land/land_cubit.dart';
 import 'package:granuls/models/device_model.dart';
 import 'package:granuls/models/plant_model.dart';
+import 'package:granuls/ui/pages/land/land_testing_screen.dart';
 import 'package:granuls/utils/show_flutter_toast.dart';
 import 'package:lottie/lottie.dart';
 
@@ -179,7 +180,9 @@ class _CreateLandScreenState extends State<CreateLandScreen> {
               margin: EdgeInsets.only(bottom: 28.h),
               child: ElevatedButton(
                 onPressed: () {
-
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => LandTestingScreen()
+                  ));
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
