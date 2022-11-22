@@ -22,14 +22,14 @@ class DeviceCubit extends Cubit<DeviceState> {
     ApiResponse<String> checkDeviceResponse = await _deviceService.checkDevice(deviceCode);
     if (checkDeviceResponse.status && checkDeviceResponse.data != null) {
       ApiResponse<String> registerDeviceResponse = await _deviceService.createDevice(checkDeviceResponse.data!);
-      isDeviceRegisterLoading = true;
+      isDeviceRegisterLoading = false;
       if (registerDeviceResponse.status) {
         emit(RegisterDeviceSuccessful());
       } else {
         emit(const RegisterDeviceFailed(message: "Gagal registrasi device baru"));
       }
     } else {
-      isDeviceRegisterLoading = true;
+      isDeviceRegisterLoading = false;
       emit(const RegisterDeviceFailed(message: "ID alat tidak valid"));
     }
   }

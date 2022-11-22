@@ -214,7 +214,7 @@ class _DeviceManagerScreenState extends State<DeviceManagerScreen> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              if (_deviceCubit.isDeviceRegisterLoading) {
+                              if (!_deviceCubit.isDeviceRegisterLoading) {
                                 _deviceCubit.registerDevice(_deviceIdController.text);
                               }
                             },

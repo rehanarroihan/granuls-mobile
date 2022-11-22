@@ -18,3 +18,23 @@ class InitCreateLandPageFailed extends LandState {
 
   InitCreateLandPageFailed(this.message);
 }
+
+class LandTestingRequestInit extends LandState {}
+
+class LandTestingRequestSuccessful extends LandState {}
+
+class LandTestingRequestFailed extends LandState {
+  String message;
+
+  LandTestingRequestFailed(this.message);
+}
+
+class SubmitLandTestingResultInitial extends LandState {}
+
+class SubmitLandTestingResultSuccessful extends LandState {}
+
+class SubmitLandTestingResultFailed extends LandState {
+  String message;
+
+  SubmitLandTestingResultFailed(this.message);
+}

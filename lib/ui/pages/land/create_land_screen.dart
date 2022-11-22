@@ -4,12 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:granuls/app.dart';
 import 'package:granuls/cubit/land/land_cubit.dart';
 import 'package:granuls/models/device_model.dart';
 import 'package:granuls/models/plant_model.dart';
+import 'package:granuls/models/request_land_testing_model.dart';
 import 'package:granuls/ui/pages/land/land_testing_screen.dart';
+import 'package:granuls/ui/widgets/modules/loading_dialog.dart';
+import 'package:granuls/utils/constant_helper.dart';
 import 'package:granuls/utils/show_flutter_toast.dart';
+import 'package:instant/instant.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateLandScreen extends StatefulWidget {
   const CreateLandScreen({Key? key}) : super(key: key);
@@ -24,9 +31,11 @@ class _CreateLandScreenState extends State<CreateLandScreen> {
   Position? position;
   String currentAddress = "Getting location...";
 
+  Placemark? place;
   PlantModel? _selectedPlant = null;
   TextEditingController _landSurfaceAreaController = TextEditingController();
   DeviceModel? _selectedDevice = null;
+  RequestLandTestingModel? payload = null;
 
   @override
   void initState() {
@@ -63,9 +72,9 @@ class _CreateLandScreenState extends State<CreateLandScreen> {
     if (position?.latitude != null && position?.longitude != null) {
       List<Placemark> placemarks = await placemarkFromCoordinates(position!.latitude, position!.longitude);
       if (placemarks.isNotEmpty) {
-        Placemark place = placemarks[0];
+        place = placemarks[0];
         setState(() {
-          currentAddress = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}";
+          currentAddress = "${place!.street}, ${place!.subLocality}, ${place!.locality}, ${place!.postalCode}, ${place!.country}";
         });
       }
     }
@@ -80,6 +89,25 @@ class _CreateLandScreenState extends State<CreateLandScreen> {
       listener: (context, state) {
         if (state is InitCreateLandPageFailed) {
           showFlutterToast(state.message);
+        }
+
+        if (state is LandTestingRequestInit) {
+          LoadingDialog(
+            title: 'Pengujian',
+            description: 'Memulai pengujian...'
+          ).show(context);
+        } else if (state is LandTestingRequestFailed) {
+          Navigator.pop(context);
+          showFlutterToast(state.message);
+        } else if (state is LandTestingRequestSuccessful) {
+          Navigator.pop(context);
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) => LandTestingScreen(
+              payload: payload!,
+              idDevice: _selectedDevice!.id!,
+              idTumbuhan: _selectedPlant!.id!,
+            )
+          ));
         }
       },
       child: BlocBuilder(
@@ -180,9 +208,35 @@ class _CreateLandScreenState extends State<CreateLandScreen> {
               margin: EdgeInsets.only(bottom: 28.h),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => LandTestingScreen()
-                  ));
+                  if (_selectedPlant == null) {
+                    showFlutterToast('Pilih tanaman terlibih dahulu');
+                    return;
+                  }
+
+                  if (_landSurfaceAreaController.text.isEmpty) {
+                    showFlutterToast('Isi luas tanah terlebih dahulu');
+                    return;
+                  }
+
+                  if (_selectedDevice == null) {
+                    showFlutterToast('Pilih alat terlebih dahulu');
+                    return;
+                  }
+
+                  DateTime dateTimeNow = DateTime.now();
+                  DateTime dateTimeWIB = dateTimeToZone(zone: "WIB", datetime: dateTimeNow);
+
+                  payload = RequestLandTestingModel(
+                    id: const Uuid().v4(),
+                    deviceId: _selectedDevice!.kodeDevice,
+                    title: "Pengujian ${App().prefs.get(ConstantHelper.PREFS_USERNAME)} - ${DateFormat('yyyy/MM/dd HH:mm').format(dateTimeWIB)}",
+                    lat: position!.latitude,
+                    lng: position!.longitude,
+                    kab: place!.administrativeArea,
+                    startAt: DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTimeWIB),
+                    endAt: DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTimeWIB.add(const Duration(seconds: 30))),
+                  );
+                  _landCubit.requestLandTesting(payload!);
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),

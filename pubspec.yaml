@@ -25,6 +25,8 @@ dependencies:
   dropdown_search: ^5.0.3
   lottie: ^2.0.0
   uuid: ^3.0.7
+  instant: ^0.4.1
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
