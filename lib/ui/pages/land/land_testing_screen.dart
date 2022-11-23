@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:granuls/cubit/land/land_cubit.dart';
 import 'package:granuls/models/request_land_testing_model.dart';
+import 'package:granuls/ui/pages/land/land_testing_result_screen.dart';
 import 'package:granuls/ui/widgets/modules/loading_dialog.dart';
 import 'package:granuls/utils/show_flutter_toast.dart';
 import 'package:lottie/lottie.dart';
@@ -29,7 +30,7 @@ class _LandTestingScreenState extends State<LandTestingScreen> {
   late LandCubit _landCubit;
 
   Timer? _timer;
-  int _start = 15;
+  int _start = 30;
 
   void startTimer() {
     const oneSec = Duration(seconds: 1);
@@ -79,7 +80,7 @@ class _LandTestingScreenState extends State<LandTestingScreen> {
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
-            title: Text(
+            title: const Text(
               'Pembatan Pengujian',
               style: TextStyle(
                 fontWeight: FontWeight.w600
@@ -92,7 +93,7 @@ class _LandTestingScreenState extends State<LandTestingScreen> {
                   Navigator.pop(context);
                   Navigator.pop(context);
                 },
-                child: Text(
+                child: const Text(
                   'Ya',
                   style: TextStyle(
                     color: Colors.red
@@ -112,6 +113,33 @@ class _LandTestingScreenState extends State<LandTestingScreen> {
     );
   }
 
+  void _showErrorDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Pengujian Gagal',
+            style: TextStyle(
+              fontWeight: FontWeight.w600
+            ),
+          ),
+          content: const Text('Gagal melakukan pengujian, pastikan alat pengujian aktif dan coba beberapa saat lagi.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              child: const Text('Oke'),
+            ),
+          ],
+        );
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener(
@@ -123,9 +151,24 @@ class _LandTestingScreenState extends State<LandTestingScreen> {
             description: 'Menyelesaikan pengujian...'
           ).show(context);
         } else if (state is SubmitLandTestingResultFailed) {
+          Navigator.pop(context);
+          _showErrorDialog();
           showFlutterToast(state.message);
         } else if (state is SubmitLandTestingResultSuccessful) {
-          showFlutterToast("Berhasil");
+          Navigator.pop(context);
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) => LandTestingResultScreen(
+              args: LandTestingResultScreenArgs(
+                idTipeTanah: state.peylud.idTipeTanah!,
+                idTumbuhan: state.peylud.idTumbuhan!,
+                n: state.peylud.n!.floor(),
+                p: state.peylud.p!.floor(),
+                k: state.peylud.k!.floor(),
+                kualitasTanah: state.tipeTanah
+              ),
+            )
+          ));
+          showFlutterToast("Pengujian Berhasil");
         }
       },
       child: BlocBuilder(

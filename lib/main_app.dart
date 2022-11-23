@@ -28,6 +28,7 @@ class MainApp extends StatelessWidget {
         builder: (context , child) {
           return MaterialApp(
             title: App().appTitle!,
+            debugShowCheckedModeBanner: false,
             theme: ThemeData(
               primarySwatch: Colors.blue,
               visualDensity: VisualDensity.adaptivePlatformDensity,

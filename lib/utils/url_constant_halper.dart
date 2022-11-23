@@ -12,7 +12,9 @@ class UrlConstantHelper {
 
   static const String GET_PLANTS = "Other/tumbuhan";
 
+  static const String GET_PENGUJIAN_TANAH = "PengujianTanah/user";
   static const String POST_REQUEST_LAND_TEST = "pengecekan";
   static const String GET_PENGUJIAN_TANAH_RESULT = "PengujianTanah/result";
   static const String POST_PENGUJIAN_TANAH = "PengujianTanah";
+  static const String GET_PENGUJIAN_TANAH_REKOMENDASI = "PengujianTanah/rekomendasi";
 }

@@ -9,6 +9,10 @@ abstract class LandState extends Equatable {
 
 class LandInitial extends LandState {}
 
+class GetLandInitial extends LandState {}
+
+class GetLandSuccessful extends LandState {}
+
 class InitCreateLandPageInitial extends LandState {}
 
 class InitCreateLandPageSuccessful extends LandState {}
@@ -31,10 +35,21 @@ class LandTestingRequestFailed extends LandState {
 
 class SubmitLandTestingResultInitial extends LandState {}
 
-class SubmitLandTestingResultSuccessful extends LandState {}
+class SubmitLandTestingResultSuccessful extends LandState {
+  PengujianTanahRequest peylud;
+  String tipeTanah;
+
+  SubmitLandTestingResultSuccessful(this.peylud, this.tipeTanah);
+}
 
 class SubmitLandTestingResultFailed extends LandState {
   String message;
 
   SubmitLandTestingResultFailed(this.message);
 }
+
+class GetVertilizerRecommendationInit extends LandState {}
+
+class GetVertilizerRecommendationSuccessful extends LandState {}
+
+class GetVertilizerRecommendationFailed extends LandState {}

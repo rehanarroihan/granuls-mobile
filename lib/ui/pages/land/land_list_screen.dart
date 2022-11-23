@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:granuls/cubit/land/land_cubit.dart';
 import 'package:granuls/ui/pages/land/create_land_screen.dart';
+import 'package:granuls/ui/pages/land/land_testing_result_screen.dart';
 import 'package:granuls/ui/widgets/base/reactive_refresh_indicator.dart';
 
 class LandListScreen extends StatefulWidget {
@@ -20,6 +21,8 @@ class _LandListScreenState extends State<LandListScreen> {
     super.initState();
 
     _landCubit = BlocProvider.of<LandCubit>(context);
+
+    _landCubit.getLandList();
   }
 
   @override
@@ -105,7 +108,18 @@ class _LandListScreenState extends State<LandListScreen> {
   Widget _landItem(BuildContext context, int index) {
     return GestureDetector(
       onTap: () {
-
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) => LandTestingResultScreen(
+            args: LandTestingResultScreenArgs(
+              idTipeTanah: _landCubit.landList[index].idTipeTanah ?? "",
+              idTumbuhan: _landCubit.landList[index].idTumbuhan ?? "",
+              n: _landCubit.landList[index].n!.floor(),
+              p: _landCubit.landList[index].p!.floor(),
+              k: _landCubit.landList[index].k!.floor(),
+              kualitasTanah: _landCubit.landList[index].tipe!
+            ),
+          )
+        ));
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
@@ -125,25 +139,30 @@ class _LandListScreenState extends State<LandListScreen> {
               ),
             ]
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                margin: EdgeInsets.only(right: 16.w),
-                child: Image(
-                  image: AssetImage('assets/images/logo.png'),
+          child: Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  margin: EdgeInsets.only(right: 16.w),
+                  child: Image(
+                    image: AssetImage('assets/images/logo.png'),
+                  ),
                 ),
-              ),
-              Text(
-                _landCubit.landList[index] ?? "DEVICE",
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500
-                ),
-              )
-            ],
+                Expanded(
+                  child: Text(
+                    _landCubit.landList[index].title ?? "Lahan",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
